@@ -1,0 +1,19 @@
+marker,value,unit
+sex,female,
+Haemoglobin,13.4,g/dL
+White blood cells,6.2,G/L
+Platelets,250,G/L
+Ferritin,85,ng/mL
+Fasting glucose,92,mg/dL
+HbA1c,5.2,%
+Creatinine,0.9,mg/dL
+Potassium,4.2,mmol/L
+Sodium,140,mmol/L
+ALT,24,U/L
+AST,21,U/L
+LDL cholesterol,110,mg/dL
+HDL cholesterol,55,mg/dL
+Triglycerides,120,mg/dL
+TSH,1.9,mIU/L
+Free T4,1.2,ng/dL
+CRP,1.5,mg/L

@@ -1,0 +1,22 @@
+{
+  "sex": "male",
+  "results": [
+    { "marker": "Haemoglobin", "value": 15.2, "unit": "g/dL" },
+    { "marker": "White blood cells", "value": 7.2, "unit": "G/L" },
+    { "marker": "Platelets", "value": 240, "unit": "G/L" },
+    { "marker": "Ferritin", "value": 280, "unit": "ng/mL" },
+    { "marker": "Fasting glucose", "value": 132, "unit": "mg/dL" },
+    { "marker": "HbA1c", "value": 6.9, "unit": "%" },
+    { "marker": "Creatinine", "value": 1.1, "unit": "mg/dL" },
+    { "marker": "Potassium", "value": 4.4, "unit": "mmol/L" },
+    { "marker": "Sodium", "value": 141, "unit": "mmol/L" },
+    { "marker": "ALT", "value": 88, "unit": "U/L" },
+    { "marker": "AST", "value": 61, "unit": "U/L" },
+    { "marker": "LDL cholesterol", "value": 172, "unit": "mg/dL" },
+    { "marker": "HDL cholesterol", "value": 34, "unit": "mg/dL" },
+    { "marker": "Triglycerides", "value": 248, "unit": "mg/dL" },
+    { "marker": "TSH", "value": 2.1, "unit": "mIU/L" },
+    { "marker": "Free T4", "value": 1.3, "unit": "ng/dL" },
+    { "marker": "CRP", "value": 3.1, "unit": "mg/L" }
+  ]
+}
