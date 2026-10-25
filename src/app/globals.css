@@ -170,8 +170,8 @@
 
 @media screen {
   :root {
-    --dna-color: color-mix(in oklch, oklch(0.86 0.11 205) 90%, var(--background));
-    --dna-opacity: 0.14;
+    --dna-color: oklch(0.9 0.15 195);
+    --dna-opacity: 0.13;
     --grain-opacity: 0.04;
     --grain-filter: none;
   }
