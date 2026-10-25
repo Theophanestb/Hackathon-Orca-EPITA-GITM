@@ -1,0 +1,8 @@
+.git
+node_modules
+.next
+out
+nginx/generated
+coverage
+*.md
+!README.md

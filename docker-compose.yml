@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    image: lab-report-analyzer:latest
+    container_name: lab-report-analyzer
+    restart: unless-stopped
+    # Loopback only: the app is reachable from this host (cloudflared), never from the network.
+    ports:
+      - "127.0.0.1:${HOST_PORT:-8085}:80"
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /run
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
