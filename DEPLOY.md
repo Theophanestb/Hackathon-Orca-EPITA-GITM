@@ -51,8 +51,7 @@ Use **one** of the two options below. Which one applies depends on how your tunn
    - Subdomain: `labanalyzer`
    - Domain: `stabat.fr`
    - Path: leave empty
-   - Service type: `HTTP`
-   - URL: `localhost:8085`
+   - Service URL: `http://lab-report-analyzer:80` (cloudflared runs in Docker on the external `web` network, which the container joins)
 5. Save. Cloudflare creates the DNS record for you, and the change applies within a few seconds without a restart.
 
 ### Option B: config.yml ingress
@@ -66,7 +65,7 @@ credentials-file: /etc/cloudflared/<TUNNEL_UUID>.json
 ingress:
   # ... your existing hostnames ...
   - hostname: labanalyzer.stabat.fr
-    service: http://localhost:8085
+    service: http://lab-report-analyzer:80
   - service: http_status:404        # must stay last
 ```
 
@@ -75,11 +74,11 @@ Then create the DNS record, validate and restart:
 ```bash
 cloudflared tunnel route dns <TUNNEL_NAME_OR_UUID> labanalyzer.stabat.fr
 cloudflared tunnel ingress validate
-cloudflared tunnel ingress rule https://labanalyzer.stabat.fr   # should print the localhost:8085 rule
+cloudflared tunnel ingress rule https://labanalyzer.stabat.fr   # should print the lab-report-analyzer:80 rule
 sudo systemctl restart cloudflared
 ```
 
-> **If cloudflared itself runs in Docker**, `localhost` refers to the cloudflared container, not to the host. Run the cloudflared container with `network_mode: host`, or remove the `127.0.0.1:` prefix and put both containers on the same Docker network, then use `http://lab-report-analyzer:80` as the service.
+> **cloudflared runs in Docker on this server**, so `localhost` would point at the cloudflared container itself. The compose file attaches the app to the external `web` network shared with cloudflared, so always use `http://lab-report-analyzer:80` as the service (also in config.yml).
 
 ### Verify
 

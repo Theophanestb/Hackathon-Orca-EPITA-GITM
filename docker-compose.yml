@@ -4,7 +4,10 @@ services:
     image: lab-report-analyzer:latest
     container_name: lab-report-analyzer
     restart: unless-stopped
-    # Loopback only: the app is reachable from this host (cloudflared), never from the network.
+    # cloudflared reaches the app through the shared external "web" network
+    # (tunnel service URL: http://lab-report-analyzer:80).
+    networks: [web]
+    # Loopback only, for local checks with curl; never exposed to the network.
     ports:
       - "127.0.0.1:${HOST_PORT:-8085}:80"
     read_only: true
@@ -14,3 +17,7 @@ services:
       - /tmp
     security_opt:
       - no-new-privileges:true
+
+networks:
+  web:
+    external: true
