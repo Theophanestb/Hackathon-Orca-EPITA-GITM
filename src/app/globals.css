@@ -160,3 +160,146 @@
     break-inside: avoid;
   }
 }
+
+/* -------------------------------------------------------------------------------------------- */
+/* Decorative layer: ambient DNA background and fine grain. Purely visual, screen only.         */
+/* Light-mode budget: --muted-foreground is 4.74:1 on white, so decorations may darken the      */
+/* background by ~2.5 % at most to keep text at WCAG AA. Hence a pale, saturated tint for the   */
+/* helix and a grain capped at 0.6 alpha x 4 % opacity, painted under content, never over it.   */
+/* -------------------------------------------------------------------------------------------- */
+
+@media screen {
+  :root {
+    --dna-color: color-mix(in oklch, oklch(0.86 0.11 205) 90%, var(--background));
+    --dna-opacity: 0.14;
+    --grain-opacity: 0.04;
+    --grain-filter: none;
+  }
+
+  .dark {
+    --dna-color: color-mix(in oklch, oklch(0.72 0.11 200) 70%, var(--foreground));
+    --dna-opacity: 0.2;
+    --grain-opacity: 0.06;
+    --grain-filter: invert(1);
+  }
+
+  /* One fixed layer behind everything (body's background propagates to the canvas). */
+  .dna-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+  }
+
+  /* The helix is an SVG mask over a theme colour; its blur is baked into /dna.svg. */
+  .dna-helix {
+    position: absolute;
+    background-color: var(--dna-color);
+    -webkit-mask: url("/dna.svg") center / contain no-repeat;
+    mask: url("/dna.svg") center / contain no-repeat;
+    opacity: var(--helix-opacity);
+    transform: rotate(var(--helix-rotate));
+    will-change: transform;
+    animation: dna-drift var(--helix-duration) ease-in-out infinite alternate;
+  }
+
+  .dna-helix-a {
+    --helix-opacity: var(--dna-opacity);
+    --helix-rotate: 24deg;
+    --helix-duration: 56s;
+    top: -14vh;
+    right: -6rem;
+    width: 30rem;
+    height: 128vh;
+  }
+
+  .dna-helix-b {
+    --helix-opacity: calc(var(--dna-opacity) * 0.6);
+    --helix-rotate: -32deg;
+    --helix-duration: 44s;
+    bottom: -34vh;
+    left: -8rem;
+    width: 24rem;
+    height: 100vh;
+    animation-direction: alternate-reverse;
+  }
+
+  /* Opacity only ever dims from its base value, so the static (reduced-motion) frame is the
+     strongest one and the contrast budget above holds on every frame. */
+  @keyframes dna-drift {
+    from {
+      transform: translate3d(0, 0, 0) rotate(var(--helix-rotate));
+      opacity: var(--helix-opacity);
+    }
+    to {
+      transform: translate3d(-3vw, 5vh, 0) rotate(calc(var(--helix-rotate) + 8deg));
+      opacity: calc(var(--helix-opacity) * 0.7);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .dna-helix-a {
+      --helix-opacity: calc(var(--dna-opacity) * 0.7);
+      right: -7rem;
+      width: 17rem;
+    }
+    .dna-helix-b {
+      --helix-opacity: calc(var(--dna-opacity) * 0.4);
+      left: -6rem;
+      width: 13rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dna-helix {
+      animation: none;
+    }
+  }
+
+  /* Grain under the content of cards (Card component and card-styled list items) and filled
+     buttons (ghost/link variants have no surface, so no grain). Painted at z-index -1 inside an
+     isolated stacking context: above the surface colour, below text, icons and focus rings. */
+  .bg-card.rounded-xl,
+  [data-slot="button"]:is(
+      [class~="bg-primary"],
+      [class~="bg-secondary"],
+      [class~="bg-background"],
+      [class~="bg-destructive/10"]
+    ) {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .bg-card.rounded-xl::after,
+  [data-slot="button"]:is(
+      [class~="bg-primary"],
+      [class~="bg-secondary"],
+      [class~="bg-background"],
+      [class~="bg-destructive/10"]
+    )::after,
+  /* Range bar track in the results table (no text inside, so the grain can sit on top). */
+  [aria-hidden="true"] > .overflow-hidden.rounded-full.bg-muted::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: url("/noise.svg") repeat;
+    background-size: 160px 160px;
+    opacity: var(--grain-opacity);
+    filter: var(--grain-filter);
+    pointer-events: none;
+  }
+
+  [aria-hidden="true"] > .overflow-hidden.rounded-full.bg-muted::after {
+    z-index: auto;
+  }
+}
+
+@media print {
+  .dna-layer {
+    display: none;
+  }
+}

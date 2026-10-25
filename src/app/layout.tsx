@@ -17,6 +17,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" suppressHydrationWarning className="h-full antialiased">
       <body className="flex min-h-full flex-col">
+        {/* Decorative ambient background (styles in globals.css). */}
+        <div aria-hidden className="dna-layer">
+          <div className="dna-helix dna-helix-a" />
+          <div className="dna-helix dna-helix-b" />
+        </div>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <TooltipProvider>
             <a
